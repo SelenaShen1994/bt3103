@@ -1,4 +1,4 @@
-# test-project
+# Splanner
 
 > A Vue.js project
 
