@@ -5,7 +5,9 @@ import App from "./App";
 import LoginComponent from "./views/login.vue";
 import FirstComponent from "./views/first_page.vue";
 import "vuesax/dist/vuesax.css";
+import Schedule from "vue-schedule";
 
+Vue.use(Schedule);
 Vue.use(VueRouter);
 Vue.config.productionTip = false;
 Vue.use(Vuesax);
