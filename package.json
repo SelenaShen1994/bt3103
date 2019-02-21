@@ -2,7 +2,7 @@
   "name": "test-project",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "main": "src/main.js",
+  "main": "main.js",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -14,7 +14,12 @@
   },
   "dependencies": {
     "vue": "^2.5.2",
-	"webpack-dev-server": ">=3.1.11"
+    "webpack-dev-server": ">=3.1.11",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1 ",
+    "vue-router": "3.0.2",
+    "vue-schedule": "2.0.4",
+    "vuesax": "3.8.16"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
@@ -33,6 +38,8 @@
     "chalk": "^2.0.1",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1 ",
     "eslint": "^4.15.0",
     "eslint-config-airbnb-base": "^11.3.0",
     "eslint-friendly-formatter": "^3.0.0",
@@ -64,16 +71,12 @@
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
-	"webpack-dev-server": "3.1.11",
+    "webpack-dev-server": "3.1.11",
     "webpack-merge": "^4.1.0"
   },
   "engines": {
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+  "browserslist": ["> 1%", "last 2 versions", "not ie <= 8"]
 }
