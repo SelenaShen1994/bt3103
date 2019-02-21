@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 # Splanner
 
 > A one-stop study planning platform designed for NUS BZA students
-=======
-# test-project
-
-> A Vue.js project
->>>>>>> b5e2234d45c08484783dce7c2da2e9086fa141af
 
 ## Build Setup
 
