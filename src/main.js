@@ -1,8 +1,6 @@
 import Vue from "vue";
 import Vuesax from "vuesax";
 import App from "./App";
-import LoginComponent from "./views/login.vue";
-import FirstComponent from "./views/first_page.vue";
 import "vuesax/dist/vuesax.css";
 import Schedule from "vue-schedule";
 import router from './router'
