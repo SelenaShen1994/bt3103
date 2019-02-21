@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
+import LoginComponent from "./views/login.vue";
+import FirstComponent from "./views/first_page.vue";
 
 Vue.use(VueRouter);
 
