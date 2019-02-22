@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <page-header />
     <div id="nav">
       <router-link
         v-if="authenticated"
