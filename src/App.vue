@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+  <div class = "header">
+    <page-header />
+  </div>
     <div id="nav">
       <router-link
         v-if="authenticated"
@@ -14,19 +17,13 @@
 </template>
 
 <script>
-import PageHeader from '@/components/Header.vue'
+import PageHeader from "@/components/Header.vue";
 
-export default {
-  name: 'app',
-  components: {
-    PageHeader
-  }
-}
-</script>
-
-<script>
 export default {
   name: "App",
+  components: {
+    PageHeader
+  },
   data() {
     return {
       authenticated: false,
@@ -53,15 +50,22 @@ export default {
 </script>
 
 <style>
+#app {
+  margin: auto;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: left;
+  color: #2c3e50;
+}
+#header {
+  margin-top: 60px;
+}
 body {
   background-color: #f0f0f0;
 }
 h1 {
   padding: 0;
   margin-top: 0;
-}
-#app {
-  width: 1024px;
-  margin: auto;
 }
 </style>

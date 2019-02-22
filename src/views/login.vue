@@ -3,6 +3,7 @@
     <h1>Login</h1>
     <input
       type="text"
+      style="border:1px solid #000000"
       name="username"
       v-model="input.username"
       placeholder="Username"
@@ -10,6 +11,7 @@
     <input
       type="password"
       name="password"
+      style="border:1px solid #000000"
       v-model="input.password"
       placeholder="Password"
     />
