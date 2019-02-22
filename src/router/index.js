@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import LoginComponent from "@/views/login.vue";
 import FirstComponent from "@/views/first_page.vue";
-import PlanComponent from "@/compnents/four_year_plan.vue"
+import PlanComponent from "@/components/four_year_plan.vue"
 
 Vue.use(VueRouter);
 
