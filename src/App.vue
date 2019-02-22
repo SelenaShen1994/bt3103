@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div>
     <page-header />
-    </div>
     <div id="nav">
       <router-link
         v-if="authenticated"
@@ -57,6 +55,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  margin:auto;
+  width: 1024px
 }
 body {
   background-color: #f0f0f0;
@@ -64,9 +64,5 @@ body {
 h1 {
   padding: 0;
   margin-top: 0;
-}
-#app {
-  width: 1024px;
-  margin: auto;
 }
 </style>

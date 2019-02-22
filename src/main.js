@@ -10,9 +10,7 @@ import 'vuetify/dist/vuetify.min.css'
 Vue.use(Schedule);
 Vue.config.productionTip = false;
 Vue.use(Vuesax);
-Vue.use(Vuetify, {
-  iconfont: 'mdi' // 'md' || 'mdi' || 'fa' || 'fa4'
-})
+Vue.use(Vuetify)
 
 
 new Vue({
