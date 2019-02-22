@@ -1,15 +1,26 @@
 <template>
   <div>
-      
+      <sidebar />
   </div>
 </template>
 
 <script>
+import SideBar from "@/components/SideBar.vue";
+
 export default {
   name: "four_year_plan",
+  components: {
+    SideBar
+  },
   data() {
     return {
-      msg: "Welcome to Your Vue.js App"
+      drawer: true,
+      items: [
+        { title: 'Timetable', icon: 'calendar-alt' },
+        { title: 'Study Plan', icon: 'book-open'},
+        { title: 'Profile', icon: 'question_answer' }
+        ],
+        right: null
     };
   }
 };
