@@ -2,36 +2,39 @@
   <div>
     <div class="sidebar"><sidebar /></div>
     <div class="dropdown">
-    <v-container>
-      <v-layout row wrap >
-        <v-flex xs12 >
-          <v-select
-            v-model="e1"
-            :menu-props="{auto: true}"
-            :items="internship"
-            label="Time for compulsory internship"
-            placeholder="Year 3 Sem 1"
-            attach="dropdown"
-          ></v-select>
-          <v-select
-            v-model="e2"
-            :menu-props="{auto: true}"
-            :items="sep"
-            label="Time for SEP"
-            placeholder="Year 3 Sem 1"
-            attach="dropdown"
-          ></v-select>
-          <v-select
-            v-model="e3"
-            :menu-props="{auto: true}"
-            :items="minors"
-            label="Minor to take"
-            placeholder="Finance"
-            attach="dropdown"
-          ></v-select>
-        </v-flex>
-      </v-layout>
-    </v-container>
+      <v-container>
+        <v-layout row wrap>
+          <v-flex xs12>
+            <v-select
+              v-model="e1"
+              :menu-props="{ auto: true }"
+              :items="internship"
+              label="Time for compulsory internship"
+              placeholder="Year 3 Sem 1"
+              attach="dropdown"
+            ></v-select>
+            <v-select
+              v-model="e2"
+              :menu-props="{ auto: true }"
+              :items="sep"
+              label="Time for SEP"
+              placeholder="Year 3 Sem 1"
+              attach="dropdown"
+            ></v-select>
+            <v-select
+              v-model="e3"
+              :menu-props="{ auto: true }"
+              :items="minors"
+              label="Minor to take"
+              placeholder="Finance"
+              attach="dropdown"
+            ></v-select>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </div>
+    <div class="studyplan">
+    <img src="./assets/studyplan_blank.png" />
     </div>
   </div>
 </template>
@@ -90,6 +93,10 @@ export default {
 }
 .dropdown {
   width: 20%;
+  float: left;
+}
+.studyplan {
+  width: 50%;
   float: left;
 }
 h1,
