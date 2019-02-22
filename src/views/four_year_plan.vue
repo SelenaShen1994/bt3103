@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import SideBar from "@/components/SideBar.vue";
+import SideBar from "@/components/Sidebar.vue";
 
 export default {
   name: "four_year_plan",
