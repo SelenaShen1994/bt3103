@@ -56,13 +56,12 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-  color: #2c3e50;
 }
 #header {
   margin-top: 60px;
 }
 body {
-  background-color: #f0f0f0;
+  background-color: #ffffff;
 }
 h1 {
   padding: 0;

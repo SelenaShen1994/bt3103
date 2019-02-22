@@ -1,32 +1,28 @@
 <template>
-  <div>
+  <div class = "sidebar">
       <sidebar />
   </div>
 </template>
 
 <script>
-import SideBar from "@/components/Sidebar.vue";
+import sidebar from "@/components/Sidebar.vue";
 
 export default {
   name: "four_year_plan",
   components: {
-    SideBar
-  },
-  data() {
-    return {
-      drawer: true,
-      items: [
-        { title: 'Timetable', icon: 'calendar-alt' },
-        { title: 'Study Plan', icon: 'book-open'},
-        { title: 'Profile', icon: 'question_answer' }
-        ],
-        right: null
-    };
+    sidebar
   }
-};
+}
 </script>
 
 <style scoped>
+#four_year_plan {
+  background-color: #ffffff;
+}
+#sidebar {
+  background-color: #ffffff;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+}
 h1,
 h2 {
   font-weight: normal;

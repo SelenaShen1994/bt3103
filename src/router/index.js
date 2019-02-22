@@ -25,7 +25,7 @@ export default new VueRouter({
         component: FirstComponent
       },
       {
-        path:"@/compnents/four_year_plan",
+        path:"@/views/four_year_plan",
         name: "four_year_plan",
         component: PlanComponent
       }
