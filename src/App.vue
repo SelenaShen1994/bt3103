@@ -18,16 +18,10 @@
 import PageHeader from '@/components/Header.vue'
 
 export default {
-  name: 'app',
+  name: "App",
   components: {
     PageHeader
-  }
-}
-</script>
-
-<script>
-export default {
-  name: "App",
+  },
   data() {
     return {
       authenticated: false,
