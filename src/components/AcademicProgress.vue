@@ -64,25 +64,53 @@
         <SortedTable :values="modulesTaken" v-if="showGrades">
           <thead>
             <tr>
-              <th scope="col" style="text-align: left; width: 10rem;">
+              <th
+                scope="col"
+                style="text-align: left; width: 10rem;"
+                :title="tableMessage"
+              >
                 <SortLink name="moduleCode">Module Code</SortLink>
               </th>
-              <th scope="col" style="text-align: left; width: 10rem;">
+              <th
+                scope="col"
+                style="text-align: left; width: 10rem;"
+                :title="tableMessage"
+              >
                 <SortLink name="moduleName">Module Name</SortLink>
               </th>
-              <th scope="col" style="text-align: left; width: 10rem;">
+              <th
+                scope="col"
+                style="text-align: left; width: 10rem;"
+                :title="tableMessage"
+              >
                 <SortLink name="modularCredits">Modular Credits</SortLink>
               </th>
-              <th scope="col" style="text-align: left; width: 10rem;">
+              <th
+                scope="col"
+                style="text-align: left; width: 10rem;"
+                :title="tableMessage"
+              >
                 <SortLink name="gradeEarned">Grades Earned</SortLink>
               </th>
-              <th scope="col" style="text-align: left; width: 10rem;">
+              <th
+                scope="col"
+                style="text-align: left; width: 10rem;"
+                :title="tableMessage"
+              >
                 <SortLink name="whetherSU">S/U Exercised?</SortLink>
               </th>
-              <th scope="col" style="text-align: left; width: 10rem;">
+              <th
+                scope="col"
+                style="text-align: left; width: 10rem;"
+                :title="tableMessage"
+              >
                 <SortLink name="moduleType">Module Type</SortLink>
               </th>
-              <th scope="col" style="text-align: left; width: 10rem;">
+              <th
+                scope="col"
+                style="text-align: left; width: 10rem;"
+                :title="tableMessage"
+              >
                 <SortLink name="semesterTaken">Semester Taken</SortLink>
               </th>
             </tr>
@@ -104,8 +132,26 @@
           What-If Analysis
         </button>
         <div v-if="showWhatIf">
-          Enter Module Code: <input v-model="whatIf.newModuleCode" /> Enter
-          Expected Grade: <input v-model="whatIf.newModuleExpectedGrade" />
+          Enter Module Code:
+          <input v-model="whatIf.newModuleCode" @keyup.enter="addModule" />
+          Choose A Grade:
+          <select
+            v-model="whatIf.newModuleExpectedGrade"
+            @keyup.enter="addModule"
+          >
+            <option disabled value=""></option>
+            <option>A+</option>
+            <option>A</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B</option>
+            <option>B-</option>
+            <option>C+</option>
+            <option>C</option>
+            <option>D</option>
+            <option>E</option>
+            <option>F</option>
+          </select>
           <br />
           <button @click="addModule();">Add Module</button><br />
           <button @click="removeModule();">Remove Module</button> <br />
@@ -122,7 +168,11 @@
               </tr>
             </tbody>
           </table>
-          <button @click="performWhatIf">Run What-If</button>
+          <button @click="runWhatIf">Run What-If</button>
+          <p v-if="whatIfClicked">
+            Graduation Requirements: <b>{{ graduationStatus }}</b> <br />
+            Expected Grade: <b>{{ expectedGrade }}</b>
+          </p>
         </div>
       </div>
     </div>
@@ -142,6 +192,10 @@ export default {
       showRequirements: false,
       showGrades: false,
       showWhatIf: false,
+      tableMessage: "Click to sort",
+      whatIfClicked: false,
+      graduationStatus: "Unsatisfied",
+      expectedGrade: 0,
       personalInfo: {
         name: "John Doh",
         metricNumber: "",
@@ -449,6 +503,8 @@ export default {
           }
         ];
       }
+      this.whatIf.newModuleCode = "";
+      this.whatIf.newModuleExpectedGrade = "";
       console.log(this.whatIf.moduleList);
     },
     removeModule() {
@@ -469,8 +525,49 @@ export default {
           alert("You have not added this module.");
         }
       }
+      this.whatIf.newModuleCode = "";
+      this.whatIf.newModuleExpectedGrade = "";
     },
-    runWhatIf() {}
+    runWhatIf() {
+      //some simple logic here that decides whether graduatable using only MCs taken
+      this.whatIfClicked = true;
+      var creditsTaken = 0;
+      for (var module of this.modulesTaken) {
+        creditsTaken += module.modularCredits;
+      }
+      var whatifMC = 0;
+      for (var module of this.whatIf.moduleList) {
+        whatifMC += 4; //assumption here that all modules are 4MC, adjust later
+      }
+      if (creditsTaken + whatifMC >= 160) {
+        this.graduationStatus = "Satisfied";
+      }
+      if (!this.whatIf.moduleList) {
+        this.expectedGrade = this.currentCAP;
+      } else {
+        //still assume that all modules are 4 mc first
+        var gradeDic = {
+          "A+": 5,
+          A: 5,
+          "A-": 4.5,
+          "B+": 4,
+          B: 3.5,
+          "B-": 3.0,
+          "C+": 2.5,
+          C: 2.0,
+          D: 1.5
+        };
+        var whatifGrade = 0;
+        for (var module of this.whatIf.moduleList) {
+          var currGrade = module.expectedGrade;
+          whatifGrade += 4 * gradeDic[currGrade];
+        }
+        var finalExpectedGrade =
+          (this.currentCAP * creditsTaken + whatifGrade) /
+          (creditsTaken + whatifMC);
+        this.expectedGrade = finalExpectedGrade.toFixed(2);
+      }
+    }
   },
   components: {
     chart
