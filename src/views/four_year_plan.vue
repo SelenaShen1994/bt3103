@@ -29,12 +29,16 @@
               placeholder="Finance"
               attach="dropdown"
             ></v-select>
+            <v-btn block color="secondary" dark @click="isSubmitted()">Submit</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
     </div>
-    <div class="studyplan">
-    <img src="./assets/studyplan_blank.png" />
+    <div class="studyplan_blank" v-show="!submitted">
+    <img src="https://i.imgur.com/xGMybMH.png" width="700px" height="500px" />
+    </div>
+    <div class="studyplan" v-show="submitted">
+    <img src="https://i.imgur.com/W3ruu0g.png" width="700px" height="500px" />
     </div>
   </div>
 </template>
@@ -49,6 +53,7 @@ export default {
   },
   data() {
     return {
+      submitted: false,
       e1: [],
       e2: [],
       e3: [],
@@ -75,6 +80,12 @@ export default {
         "No plan"
       ]
     };
+  },
+  methods: {
+    isSubmitted: function()
+    {
+      this.submitted = true;
+    }
   }
 };
 </script>
@@ -95,9 +106,10 @@ export default {
   width: 20%;
   float: left;
 }
-.studyplan {
+.studyplan .studyplan_blank {
   width: 50%;
   float: left;
+
 }
 h1,
 h2 {
