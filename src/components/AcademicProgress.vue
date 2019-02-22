@@ -156,7 +156,7 @@
           <button @click="addModule();">Add Module</button><br />
           <button @click="removeModule();">Remove Module</button> <br />
           <br />
-          <table>
+          <table v-if='showWhatIfTable'>
             <tr>
               <th>Module Code</th>
               <th>Expected Grade</th>
@@ -168,7 +168,7 @@
               </tr>
             </tbody>
           </table>
-          <button @click="runWhatIf">Run What-If</button>
+          <button @click="runWhatIf" v-if='showWhatIfTable'>Run What-If</button>
           <p v-if="whatIfClicked">
             Graduation Requirements: <b>{{ graduationStatus }}</b> <br />
             Expected Grade: <b>{{ expectedGrade }}</b>
@@ -192,6 +192,7 @@ export default {
       showRequirements: false,
       showGrades: false,
       showWhatIf: false,
+      showWhatIfTable: false,
       tableMessage: "Click to sort",
       whatIfClicked: false,
       graduationStatus: "Unsatisfied",
@@ -441,9 +442,6 @@ export default {
           randomChannel(brightness)
       ];
     },
-    showWhatIfTable() {
-      return !this.whatIf.moduleList;
-    }
   },
   methods: {
     clickRequirements() {
@@ -505,7 +503,12 @@ export default {
       }
       this.whatIf.newModuleCode = "";
       this.whatIf.newModuleExpectedGrade = "";
+      // show what-if module table only when there is module added
+      this.showWhatIfTable = true;
       console.log(this.whatIf.moduleList);
+      if(this.whatIfClicked){
+        this.runWhatIf();
+      }
     },
     removeModule() {
       if (!this.whatIf.moduleList) {
@@ -519,18 +522,28 @@ export default {
           ) {
             hasMod = true;
             this.whatIf.moduleList.splice(index, 1);
+            console.log(! this.whatIf.moduleList)
+            // hide what-if module table if all modules have been removrd
+            if(! this.whatIf.moduleList.length){
+              this.showWhatIfTable = false;
+            }
           }
         }
         if (!hasMod) {
           alert("You have not added this module.");
-        }
+        };
       }
       this.whatIf.newModuleCode = "";
       this.whatIf.newModuleExpectedGrade = "";
+      console.log(this.showWhatIfTable)
+      if(this.whatIfClicked){
+        this.runWhatIf();
+      }
     },
     runWhatIf() {
       //some simple logic here that decides whether graduatable using only MCs taken
       this.whatIfClicked = true;
+      this.expectedGrade = this.currentCAP;
       var creditsTaken = 0;
       for (var module of this.modulesTaken) {
         creditsTaken += module.modularCredits;
@@ -542,9 +555,7 @@ export default {
       if (creditsTaken + whatifMC >= 160) {
         this.graduationStatus = "Satisfied";
       }
-      if (!this.whatIf.moduleList) {
-        this.expectedGrade = this.currentCAP;
-      } else {
+      if (this.whatIf.moduleList) {
         //still assume that all modules are 4 mc first
         var gradeDic = {
           "A+": 5,
