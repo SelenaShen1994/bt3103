@@ -5,6 +5,7 @@ import "vuesax/dist/vuesax.css";
 import Schedule from "vue-schedule";
 import router from './router'
 import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Schedule);
 Vue.config.productionTip = false;
