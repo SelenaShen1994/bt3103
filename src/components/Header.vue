@@ -1,10 +1,20 @@
 <template>
-  <v-toolbar fixed class="cyan" dark>
-    <v-toolbar-title class="mr-4">
-        Splanner
-    </v-toolbar-title>
+  <div
+    class="hide-overflow"
+    style="position: relative;"
+  >
+    <v-toolbar
+      absolute
+      color="teal lighten-3"
+      dark
+      scroll-off-screen
+      scroll-target="#scrolling-techniques"
+    >
+      <v-toolbar-side-icon></v-toolbar-side-icon>
 
-    <v-toolbar-items>
+      <v-toolbar-title class="mr-4">Splanner</v-toolbar-title>
+
+       <v-toolbar-items>
       <v-btn 
         flat 
         dark
@@ -15,19 +25,18 @@
       </v-btn>
     </v-toolbar-items>
 
-    <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
 
-    
-  </v-toolbar>
+      <v-btn icon>
+        <v-icon>search</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <div
+      id="scrolling-techniques"
+      class="scroll-y"
+      style="max-height: 600px;"
+    >
+      <v-container style="height: 1000px;"></v-container>
+    </div>
+  </div>
 </template>
-
-
-<style scoped>
-.home {
-  cursor: pointer;
-}
-
-.home:hover {
-  color: #E9E;
-}
-</style>
