@@ -58,13 +58,6 @@ export default {
   text-align: left;
 }
 #header {
-  margin-top: 60px;
-}
-body {
-  background-color: #ffffff;
-}
-h1 {
-  padding: 0;
-  margin-top: 0;
+  color: #2c3e50;
 }
 </style>

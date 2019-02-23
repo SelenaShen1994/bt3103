@@ -20,6 +20,10 @@
     "vue-schedule": "2.0.4",
     "vuesax": "3.8.16",
     "vuetify": "^1.5.2",
+    "chart.js": "2.7.3",
+    "function": "0.6.1",
+    "vue-chartjs": "3.4.0",
+    "vue-sorted-table": "1.0.1",
     "webpack-dev-server": ">=3.1.11"
   },
   "devDependencies": {
