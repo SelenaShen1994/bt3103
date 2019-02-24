@@ -1,178 +1,255 @@
 <template>
   <div>
-    <br /><br /><br />
-    <div class="academicProgress">
-      <p><b>Current CAP</b></p>
-      <div class="container">
-        <div
-          :style="{
-            'background-color': someRandomColor[1],
-            width: (currentCAP / 5.0) * 100 + '%'
-          }"
+    <br /><br />
+    <div
+      class="academicProgress"
+      :style="{ 'padding-left': '210px', width: '95%' }"
+    >
+      <v-card>
+        <v-container fluid grid-list-lg>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-card color="teal lighten-3" class="white--text">
+                <v-layout>
+                  <v-flex xs5>
+                    <v-img
+                      src="https://pbs.twimg.com/media/C9XyZz0VYAElz7z.jpg"
+                      height="125px"
+                      contain
+                    ></v-img>
+                  </v-flex>
+                  <v-flex xs7>
+                    <v-card-title primary-title>
+                      <div>
+                        <div class="headline">{{ personalInfo.name }}</div>
+                        <div>
+                          <v-icon>fas fa-birthday-cake</v-icon>
+                          {{ personalInfo.birthday }}
+                        </div>
+                        <div>
+                          <v-icon>fas fa-at</v-icon> {{ personalInfo.email }}
+                        </div>
+                        <div>
+                          <v-icon>fas fa-mobile</v-icon>
+                          {{ personalInfo.contactNumber }}
+                        </div>
+                      </div>
+                    </v-card-title>
+                  </v-flex>
+                </v-layout>
+                <v-divider light></v-divider>
+                <v-card-text class="pa-3">
+                  <v-spacer></v-spacer>
+                  <div>
+                    <p>Cohort: {{ degreeInfo.cohortYear }}</p>
+                    <p>Home Faculty: {{ degreeInfo.homeFaculty1 }}</p>
+                    <p>Academic Major: {{ degreeInfo.academicMajor1 }}</p>
+                    <p>Degree: {{ degreeInfo.academicDegree1 }}</p>
+                    <p v-if="!degreeInfo.academicMajor2 == ''">
+                      Second Major: {{ degreeInfo.academicMajor2 }}
+                    </p>
+                    <p v-if="!degreeInfo.academicMinor == ''">
+                      Academic Minor: {{ degreeInfo.academicMinor }}
+                    </p>
+                  </div>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-card>
+      <button class="collapsible" @click="clickOverallProgress">
+        Overall Progress
+      </button>
+      <v-card class="mx-auto" max-width="980" v-if="showOverall">
+        <v-card-title>
+          <div class="subheading font-weight-light grey--text">
+            By Semester CAP
+          </div>
+        </v-card-title>
+        <v-sheet
+          class="v-sheet--offset mx-auto"
+          color="cyan lighten-3"
+          max-width="calc(100% - 72px)"
         >
-          {{ currentCAP }}/5.0
-        </div>
-      </div>
-
-      <p><b>Degree Progress</b></p>
-      <div class="container">
-        <div
-          :style="{
-            'background-color': someRandomColor[0],
-            width: (totalMCEarned / totalMCRequired) * 100 + '%'
-          }"
-        >
-          {{ totalMCEarned }}/{{ totalMCRequired }} Modular Credits
-        </div>
-      </div>
-      <br /><br /><br />
-      <chart
-        :data="bySemCAP[1]"
-        :label="bySemCAP[0]"
-        :background="someRandomColor[2]"
-        :options="{ responsive: true, maintainAspectRatio: false }"
-      ></chart>
-      <br /><br /><br />
+          <v-sparkline
+            :labels="bySemCAP[0]"
+            :value="bySemCAP[1]"
+            color="white"
+            line-width="2"
+            padding="16"
+            show-labels
+            auto-draw
+          ></v-sparkline>
+        </v-sheet>
+        <v-divider class="my-2"></v-divider>
+        <v-icon class="mr-2" small> mdi-clock </v-icon>
+        <v-card-text class="pt-0">
+          <div class="subheading font-weight-light grey--text">
+            Current CAP
+            <div class="container">
+              <div
+                :style="{
+                  'background-color': someRandomColor[1],
+                  width: (currentCAP / 5.0) * 100 + '%'
+                }"
+              >
+                {{ currentCAP }}/5.0
+              </div>
+            </div>
+          </div>
+          <v-divider class="my-2"></v-divider>
+          <v-icon class="mr-2" small> mdi-clock </v-icon>
+          <div class="subheading font-weight-light grey--text">
+            Degree Progress
+            <div class="container">
+              <div
+                :style="{
+                  'background-color': someRandomColor[0],
+                  width: (totalMCEarned / totalMCRequired) * 100 + '%'
+                }"
+              >
+                {{ totalMCEarned }}/{{ totalMCRequired }} Modular Credits
+              </div>
+            </div>
+          </div>
+        </v-card-text>
+      </v-card>
+      <br /><br />
 
       <button class="collapsible" @click="clickRequirements">
         Requirements Breakdown
       </button>
-      <table v-if="showRequirements">
-        <tr>
-          <th>Module Type</th>
-          <th>MCs Required</th>
-          <th>MCs Earned</th>
-        </tr>
-        <tr v-for="(reqtype, index) in byModuleTypeProgress">
-          <td>{{ reqtype.type }}</td>
-          <td>{{ reqtype.number }}</td>
-          <td>{{ reqtype.earned }}</td>
-        </tr>
-        <tfoot>
-          <tr>
-            <td>Total</td>
-            <td>{{ totalMCRequired }}</td>
-            <td>{{ totalMCEarned }}</td>
-          </tr>
-        </tfoot>
-      </table>
-      <br /><br /><br />
+      <div class="text-xs-center" v-if="showRequirements">
+        <v-container fluid>
+          <v-layout row>
+            <v-flex xs4 v-for="reqtype of byModuleTypeProgress" :key="type">
+              {{ reqtype.type }}<br /><br />
+              <v-progress-circular
+                :rotate="360"
+                :size="100"
+                :width="15"
+                :value="reqtype.percentage"
+                color="teal"
+              >
+                {{ reqtype.earned }}/{{ reqtype.number }} MC
+              </v-progress-circular>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </div>
+      <br /><br />
       <div class="moduleInfo">
         <button class="collapsible" @click="clickGrades">
           Grades Breakdown
         </button>
-        <SortedTable :values="modulesTaken" v-if="showGrades">
-          <thead>
-            <tr>
-              <th
-                scope="col"
-                style="text-align: left; width: 10rem;"
-                :title="tableMessage"
-              >
-                <SortLink name="moduleCode">Module Code</SortLink>
-              </th>
-              <th
-                scope="col"
-                style="text-align: left; width: 10rem;"
-                :title="tableMessage"
-              >
-                <SortLink name="moduleName">Module Name</SortLink>
-              </th>
-              <th
-                scope="col"
-                style="text-align: left; width: 10rem;"
-                :title="tableMessage"
-              >
-                <SortLink name="modularCredits">Modular Credits</SortLink>
-              </th>
-              <th
-                scope="col"
-                style="text-align: left; width: 10rem;"
-                :title="tableMessage"
-              >
-                <SortLink name="gradeEarned">Grades Earned</SortLink>
-              </th>
-              <th
-                scope="col"
-                style="text-align: left; width: 10rem;"
-                :title="tableMessage"
-              >
-                <SortLink name="whetherSU">S/U Exercised?</SortLink>
-              </th>
-              <th
-                scope="col"
-                style="text-align: left; width: 10rem;"
-                :title="tableMessage"
-              >
-                <SortLink name="moduleType">Module Type</SortLink>
-              </th>
-              <th
-                scope="col"
-                style="text-align: left; width: 10rem;"
-                :title="tableMessage"
-              >
-                <SortLink name="semesterTaken">Semester Taken</SortLink>
-              </th>
-            </tr>
-          </thead>
-          <tbody slot="body" slot-scope="sort">
-            <tr v-for="value in sort.values" :key="value.moduleCode">
-              <td>{{ value.moduleCode }}</td>
-              <td>{{ value.moduleName }}</td>
-              <td>{{ value.modularCredits }}</td>
-              <td>{{ value.gradeEarned }}</td>
-              <td>{{ value.whetherSU }}</td>
-              <td>{{ value.moduleType }}</td>
-              <td>{{ value.semesterTaken }}</td>
-            </tr>
-          </tbody>
-        </SortedTable>
-        <br /><br /><br />
+        <v-container fluid>
+          <v-data-table
+            :headers="moduleCats"
+            :items="modulesTaken"
+            class="elevation-1"
+            v-if="showGrades"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.moduleCode }}</td>
+              <td class="text-xs-right">{{ props.item.moduleName }}</td>
+              <td class="text-xs-right">{{ props.item.modularCredits }}</td>
+              <td class="text-xs-right">{{ props.item.gradeEarned }}</td>
+              <td class="text-xs-right">{{ props.item.whetherSU }}</td>
+              <td class="text-xs-right">{{ props.item.moduleType }}</td>
+              <td class="text-xs-right">{{ props.item.semesterTaken }}</td>
+            </template>
+          </v-data-table>
+        </v-container>
         <button class="collapsible" @click="clickWhatIf">
           What-If Analysis
         </button>
         <div v-if="showWhatIf">
-          Enter Module Code:
-          <input v-model="whatIf.newModuleCode" @keyup.enter="addModule" />
-          Choose A Grade:
-          <select
-            v-model="whatIf.newModuleExpectedGrade"
-            @keyup.enter="addModule"
-          >
-            <option disabled value=""></option>
-            <option>A+</option>
-            <option>A</option>
-            <option>A-</option>
-            <option>B+</option>
-            <option>B</option>
-            <option>B-</option>
-            <option>C+</option>
-            <option>C</option>
-            <option>D</option>
-            <option>E</option>
-            <option>F</option>
-          </select>
-          <br />
-          <button @click="addModule();">Add Module</button><br />
-          <button @click="removeModule();">Remove Module</button> <br />
-          <br />
-          <table v-if='showWhatIfTable'>
-            <tr>
-              <th>Module Code</th>
-              <th>Expected Grade</th>
-            </tr>
-            <tbody>
-              <tr v-for="module in whatIf.moduleList" :key="module.moduleCode">
-                <td>{{ module.moduleCode }}</td>
-                <td>{{ module.expectedGrade }}</td>
-              </tr>
-            </tbody>
-          </table>
-          <button @click="runWhatIf" v-if='showWhatIfTable'>Run What-If</button>
-          <p v-if="whatIfClicked">
-            Graduation Requirements: <b>{{ graduationStatus }}</b> <br />
-            Expected Grade: <b>{{ expectedGrade }}</b>
-          </p>
+          <span class="form-style-2-heading">
+            Choose Modules for What-If Analysis
+          </span>
+          <v-container fluid grid-list-md text-xs-center>
+            <v-layout row wrap>
+              <v-flex xs6>
+                <v-text-field
+                  v-model="whatIf.newModuleCode"
+                  label="Enter Module Code"
+                  placeholder="BT1101"
+                  box
+                  @keyup.enter="addModule"
+                ></v-text-field>
+                <v-select
+                  v-model="whatIf.newModuleExpectedGrade"
+                  :menu-props="{ auto: true }"
+                  :items="[
+                    'A+',
+                    'A',
+                    'A-',
+                    'B+',
+                    'B',
+                    'B-',
+                    'C+',
+                    'C',
+                    'D',
+                    'E'
+                  ]"
+                  label="Choose an Expected Grade"
+                  placeholder="A+"
+                  attach="dropdown"
+                  box
+                  @keyup.enter="addModule"
+                ></v-select>
+
+                <v-btn fab dark color="#42C3FF" @click="addModule();">
+                  <v-icon dark>add</v-icon>
+                </v-btn>
+                <v-btn fab dark color="#5ADFFF" @click="removeModule();">
+                  <v-icon dark>remove</v-icon>
+                </v-btn>
+                <v-btn fab dark color="#9CFFED" @click="runWhatIf">
+                  <v-icon dark>check_circle</v-icon>
+                </v-btn>
+              </v-flex>
+              <v-flex xs6>
+                <v-data-table
+                  v-model="selected"
+                  :headers="[
+                    { text: 'Module Code', value: 'moduleCode' },
+                    { text: 'Expected Grade', value: 'expectedGrade' }
+                  ]"
+                  :items="whatIf.moduleList"
+                  select-all
+                  class="elevation-1"
+                  v-if="showWhatIfTable"
+                >
+                  <template slot="items" slot-scope="props">
+                    <tr
+                      :active="props.selected"
+                      @click="props.selected = !props.selected;"
+                    >
+                      <td>
+                        <v-checkbox
+                          v-model="props.selected"
+                          primary
+                          hide-details
+                        ></v-checkbox>
+                      </td>
+                      <td>{{ props.item.moduleCode }}</td>
+                      <td class="text-xs-right">
+                        {{ props.item.expectedGrade }}
+                      </td>
+                    </tr>
+                  </template>
+                </v-data-table>
+              </v-flex>
+            </v-layout>
+          </v-container>
+          <v-container fluid>
+            <p v-if="whatIfClicked">
+              Graduation Requirements: <b>{{ graduationStatus }}</b> <br />
+              Expected Grade: <b>{{ expectedGrade }}</b>
+            </p>
+          </v-container>
         </div>
       </div>
     </div>
@@ -189,6 +266,7 @@ export default {
   name: "AcademicProgress",
   data() {
     return {
+      showOverall: true,
       showRequirements: false,
       showGrades: false,
       showWhatIf: false,
@@ -197,14 +275,14 @@ export default {
       whatIfClicked: false,
       graduationStatus: "Unsatisfied",
       expectedGrade: 0,
+      selected: [],
       personalInfo: {
-        name: "John Doh",
+        name: "Kris Wu",
         metricNumber: "",
-        email: "",
-        contactNumber: "",
+        email: "kris.wu@u.nus.edu",
+        contactNumber: "9123 4567",
         address: "",
-        profilePic:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcNusDQ1v1fI3iyILqAHNX7EAVw5UOVcYy_vmURFqUCjk3sR1IzA"
+        birthday: "06 November 1990"
       },
       degreeInfo: {
         cohortYear: "AY 2015/2016",
@@ -223,13 +301,13 @@ export default {
         graduated: false
       },
       moduleCats: [
-        "moduleCode",
-        "MmoduleName",
-        "modularCredits",
-        "gradeEarned",
-        "whetherSU",
-        "moduleType",
-        "semesterTaken"
+        { text: "Module Code", value: "moduleCode" },
+        { text: "Module Name", value: "moduleName" },
+        { text: "Modular Credits", value: "modularCredits" },
+        { text: "Grade Obtained", value: "gradeEarned" },
+        { text: "S/U Exercised?", value: "whetherSU" },
+        { text: "Module Type", value: "moduleType" },
+        { text: "Semester Taken", value: "semesterTaken" }
       ],
       moduleTableSortKey: "semesterTaken",
       moduleTableSortOrder: "asc",
@@ -361,6 +439,7 @@ export default {
           }
         }
         dic[index].earned = count;
+        dic[index].percentage = (dic[index].earned / dic[index].number) * 100;
       }
       console.log(dic);
       return dic;
@@ -409,7 +488,7 @@ export default {
       for (var index in res2) {
         if (res2[index][1] != 0) {
           res3[0].push(res2[index][0]);
-          res3[1].push(res2[index][1]);
+          res3[1].push(parseFloat(res2[index][1])).toFixed(2);
         }
       }
       console.log(res3);
@@ -441,9 +520,16 @@ export default {
           randomChannel(brightness) +
           randomChannel(brightness)
       ];
-    },
+    }
   },
   methods: {
+    clickOverallProgress() {
+      if (this.showOverall == true) {
+        this.showOverall = false;
+      } else {
+        this.showOverall = true;
+      }
+    },
     clickRequirements() {
       if (this.showRequirements == true) {
         this.showRequirements = false;
@@ -506,7 +592,7 @@ export default {
       // show what-if module table only when there is module added
       this.showWhatIfTable = true;
       console.log(this.whatIf.moduleList);
-      if(this.whatIfClicked){
+      if (this.whatIfClicked) {
         this.runWhatIf();
       }
     },
@@ -522,21 +608,21 @@ export default {
           ) {
             hasMod = true;
             this.whatIf.moduleList.splice(index, 1);
-            console.log(! this.whatIf.moduleList)
+            console.log(!this.whatIf.moduleList);
             // hide what-if module table if all modules have been removrd
-            if(! this.whatIf.moduleList.length){
+            if (!this.whatIf.moduleList.length) {
               this.showWhatIfTable = false;
             }
           }
         }
         if (!hasMod) {
           alert("You have not added this module.");
-        };
+        }
       }
       this.whatIf.newModuleCode = "";
       this.whatIf.newModuleExpectedGrade = "";
-      console.log(this.showWhatIfTable)
-      if(this.whatIfClicked){
+      console.log(this.showWhatIfTable);
+      if (this.whatIfClicked) {
         this.runWhatIf();
       }
     },
@@ -588,7 +674,7 @@ export default {
 
 <style>
 .collapsible {
-  background-color: whitesmoke;
+  background-color: #defcf3;
   color: dimgray;
   cursor: pointer;
   padding: 18px;
@@ -597,5 +683,18 @@ export default {
   text-align: left;
   outline: none;
   font-size: 15px;
+}
+
+.form-style-2 {
+  max-width: 500px;
+  padding: 20px 12px 10px 20px;
+}
+.form-style-2-heading {
+  font-weight: bold;
+  font-style: italic;
+  border-bottom: 2px solid #ddd;
+  margin-bottom: 20px;
+  font-size: 15px;
+  padding-bottom: 3px;
 }
 </style>
