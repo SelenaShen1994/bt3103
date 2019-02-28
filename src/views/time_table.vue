@@ -19,30 +19,29 @@
           </v-flex>
         </v-layout>
       </v-container>
-    </div>
-
-    <div class="timetable">
-      <Schedule
-        :time-ground="['08:00', '18:00']"
-        :week-ground="['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']"
-        :task-detail="[
-          [
-            {
-              dateStart: '08:00',
-              dateEnd: '10:30',
-              title: 'BT3103'
-            }
-          ],
-          [
-            {
-              dateStart: '11:30',
-              dateEnd: '13:30',
-              title: 'BT3102'
-            }
-          ]
-        ]"
+      <v-btn color="teal lighten-2" dark @click="changeLayout();"
+        >Change Layout</v-btn
       >
-      </Schedule>
+      <v-btn color="teal lighten-2" dark @click="switchTable();">{{
+        table.text
+      }}</v-btn>
+      <v-btn color="teal lighten-2" dark @click="clearTable();"
+        >Clear TimeTable</v-btn
+      >
+    </div>
+    <div class="horizontal_timetable" v-show="empty_horizontal">
+      <img src=../assets/horizontal_timetable.png width="850px" height="400px"
+      />
+    </div>
+    <div class="vertical_timetable" v-show="!horizontal">
+      <img src=../assets/vertical_timetable.png width="700px" height="500px" />
+    </div>
+    <div class="horizontal_timetable_withmodule" v-show="moduleAdded">
+      <img src=../assets/horizontal_timetable_3103.png width="850px"
+      height="400px" />
+    </div>
+    <div class="exam_table" v-show="examtable">
+      <img src=../assets/examtable.png width="600px" height="150px" />
     </div>
   </div>
 </template>
@@ -54,8 +53,12 @@ export default {
   name: "time_table",
   data() {
     return {
-      active: false,
+      table: {
+        text: "Exam Table"
+      },
+      horizontal: true,
       moduleAdded: false,
+      examtable: false,
       moduleList: [],
       modules: [
         "BT3101 Business Analytics Capstone Project",
@@ -70,6 +73,23 @@ export default {
   methods: {
     addModule: function() {
       this.moduleAdded = true;
+    },
+    changeLayout: function() {
+      this.horizontal = !this.horizontal;
+    },
+    switchTable: function() {
+      this.examtable = !this.examtable;
+      this.table.text = this.examtable ? "Time Table" : "Exam Table";
+      this.moduleAdded = !this.moduleAdded;
+    },
+    clearTable: function() {
+      this.horizontal = true;
+      this.moduleAdded = false;
+    }
+  },
+  computed: {
+    empty_horizontal() {
+      return this.horizontal && !this.moduleAdded && !this.examtable;
     }
   }
 };
